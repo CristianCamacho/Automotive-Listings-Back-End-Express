@@ -4,7 +4,6 @@ const app = express()
 const PORT = 3000
 
 app.use(express.json())
-
 app.use('/autoInfo', routes.autoInfo)
 
 app.get('/', (req, res) => {

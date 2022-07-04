@@ -3,5 +3,6 @@ const router = express.Router()
 const controlls = require('../controllers')
 
 router.get('/getYears', controlls.autoInfo.getYears)
+router.get('/getMakes', controlls.autoInfo.getMakes)
 
 module.exports = router

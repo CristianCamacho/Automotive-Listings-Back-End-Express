@@ -1,13 +1,10 @@
 const fetch = require('node-fetch')
 const parseString = require('xml2js').parseString
+
 const getYears = (req, res) => {
-    let years = []
     fetch('https://www.fueleconomy.gov/ws/rest/vehicle/menu/year').then((res) => {
         return res.text()
     }).then((yearsXml) => {
-        // for (let i = 0; i < yearsXml.getElementsByTagName('menuItem').length; i++) {
-        //     years.appendChild(yearsXml.getElementsByTagName('menuItem')[i].firstChild.innerHTML)
-        // }
         parseString(yearsXml, function (error, result) {
             if (error) {
                 console.log(error)
@@ -23,6 +20,26 @@ const getYears = (req, res) => {
     })
 }
 
+const getMakes = (req, res) => {
+    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/make?year=${req.query.year}`).then((res) => {
+        return res.text()
+    }).then((makesXml) => {
+        parseString(makesXml, function (error, result) {
+            if (error) {
+                console.log(error)
+                res.sendStatus(500)
+            } else {
+                res.json({
+                    makes: result.menuItems.menuItem.map((element) => {
+                        return element.value[0]
+                    })
+                })
+            }
+        })
+    })
+}
+
 module.exports = {
-    getYears
+    getYears,
+    getMakes
 }

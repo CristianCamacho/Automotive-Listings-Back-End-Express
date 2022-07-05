@@ -39,7 +39,27 @@ const getMakes = (req, res) => {
     })
 }
 
+const getModels = (req, res) => {
+    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=${req.query.year}&make${req.query.model}`).then((res) => {
+        return res.text()
+    }).then((modelsXml) => {
+        parseString(modelsXml, function (error, result) {
+            if (error) {
+                console.log(error)
+                res.sendStatus(500)
+            } else {
+                res.json({
+                    models: result.menuItems.menuItem.map((element) => {
+                        return element.value[0]
+                    })
+                })
+            }
+        })
+    })
+}
+
 module.exports = {
     getYears,
-    getMakes
+    getMakes,
+    getModels
 }

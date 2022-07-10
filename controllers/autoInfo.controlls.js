@@ -17,6 +17,9 @@ const getYears = (req, res) => {
                 })
             }
         })
+    }).catch((error) => {
+        console.log(error)
+        res.sendStatus(500)
     })
 }
 
@@ -36,25 +39,33 @@ const getMakes = (req, res) => {
                 })
             }
         })
+    }).catch((error) => {
+        console.log(error)
+        res.sendStatus(500)
     })
 }
 
 const getModels = (req, res) => {
-    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=${req.query.year}&make${req.query.model}`).then((res) => {
+    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=2012&make=Honda`).then((res) => {
+        console.log(res)
         return res.text()
     }).then((modelsXml) => {
+        console.log(modelsXml)
         parseString(modelsXml, function (error, result) {
             if (error) {
                 console.log(error)
                 res.sendStatus(500)
             } else {
-                res.json({
-                    models: result.menuItems.menuItem.map((element) => {
+                res.status(200).json({
+                    makes: result.menuItems.menuItem.map((element) => {
                         return element.value[0]
                     })
                 })
             }
         })
+    }).catch((error) => {
+        console.log(error)
+        res.sendStatus(500)
     })
 }
 

@@ -46,11 +46,10 @@ const getMakes = (req, res) => {
 }
 
 const getModels = (req, res) => {
-    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=2012&make=Honda`).then((res) => {
+    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=${req.query.year}&make=${req.query.make}`).then((res) => {
         console.log(res)
         return res.text()
     }).then((modelsXml) => {
-        console.log(modelsXml)
         parseString(modelsXml, function (error, result) {
             if (error) {
                 console.log(error)
@@ -69,8 +68,36 @@ const getModels = (req, res) => {
     })
 }
 
+const getOptions = (req, res) => {
+    fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${req.query.year}&make=${req.query.make}&model=${req.query.model}`).then((res) => {
+        console.log(res)
+        return res.text()
+    }).then((optionsXml) => {
+        parseString(optionsXml, function (error, result) {
+            if (error) {
+                console.log(error)
+                res.sendStatus(500)
+            } else {
+                console.log(result.menuItems)
+                res.status(200).json({
+                    options: result.menuItems.menuItem.map((element) => {
+                        return {
+                            id: element.value[0],
+                            option: element.text[0]
+                        }
+                    })
+                })
+            }
+        })
+    }).catch((error) => {
+        console.log(error)
+        res.sendStatus(500)
+    })
+}
+
 module.exports = {
     getYears,
     getMakes,
-    getModels
+    getModels,
+    getOptions
 }

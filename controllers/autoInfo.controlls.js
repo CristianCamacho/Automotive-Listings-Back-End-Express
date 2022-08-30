@@ -47,7 +47,6 @@ const getMakes = (req, res) => {
 
 const getModels = (req, res) => {
     fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=${req.query.year}&make=${req.query.make}`).then((res) => {
-        console.log(res)
         return res.text()
     }).then((modelsXml) => {
         parseString(modelsXml, function (error, result) {
@@ -70,7 +69,6 @@ const getModels = (req, res) => {
 
 const getOptions = (req, res) => {
     fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${req.query.year}&make=${req.query.make}&model=${req.query.model}`).then((res) => {
-        console.log(res)
         return res.text()
     }).then((optionsXml) => {
         parseString(optionsXml, function (error, result) {
@@ -78,7 +76,6 @@ const getOptions = (req, res) => {
                 console.log(error)
                 res.sendStatus(500)
             } else {
-                console.log(result.menuItems)
                 res.status(200).json({
                     options: result.menuItems.menuItem.map((element) => {
                         return {

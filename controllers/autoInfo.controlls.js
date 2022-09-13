@@ -92,9 +92,54 @@ const getOptions = (req, res) => {
     })
 }
 
+const getInfoById = (req, res) => {
+    // fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${req.query.id}`).then((res) => {
+    //     return res.text()
+    // }).then((autoInfoXml) => {
+    //     parseString(autoInfoXml, function ( error, result) {
+    //         if(error) {
+    //             console.log(error)
+    //             res.sendStatus(500)
+    //         } else {
+    //             res.status(200).json({
+    //                 info: result.vehicle
+    //             })
+    //         }
+    //     })
+    // }).catch((error) => {
+    //     console.log(error)
+    //     res.sendStatus(500)
+    // })
+    let queryData = urlQuery(`https://www.fueleconomy.gov/ws/rest/vehicle/${req.query.id}`) 
+
+    res.status(200).json({
+        info: 'test'
+    })
+
+}
+
+const urlQuery = (url) => {
+    fetch(url).then((res) => {
+        return res.text()
+    }).then((infoXml) => {
+        parseString(infoXml, function ( error, result) {
+            if(error) {
+                console.log(error)
+                res.sendStatus(500)
+            } else {
+                return result;
+            }
+        })
+    }).catch((error) => {
+        console.log(error)
+        res.sendStatus(500)
+    })
+}
+
 module.exports = {
     getYears,
     getMakes,
     getModels,
-    getOptions
+    getOptions,
+    getInfoById
 }

@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+
+  al-backend:
+    container_name: al-backend
+    build:
+      context: .
+    ports:
+      - '3000:3000'

@@ -6,5 +6,6 @@ router.get('/get-years', controlls.autoInfo.getYears)
 router.get('/get-makes', controlls.autoInfo.getMakes)
 router.get('/get-models', controlls.autoInfo.getModels)
 router.get('/get-options', controlls.autoInfo.getOptions)
+router.get('/get-info-id', controlls.autoInfo.getInfoById)
 
 module.exports = router

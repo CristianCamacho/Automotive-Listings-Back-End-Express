@@ -3,7 +3,7 @@ const parseString = require('xml2js').parseString
 
 const getYears = (req, res) => {
     urlQuery('https://www.fueleconomy.gov/ws/rest/vehicle/menu/year', function (data) {
-        res.json({
+        res.status(200).json({
             makes: data.menuItems.menuItem.map((element) => {
                 return element.value[0]
             })
@@ -13,7 +13,7 @@ const getYears = (req, res) => {
 
 const getMakes = (req, res) => {
     urlQuery(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/make?year=${req.query.year}`, function (data) {
-        res.json({
+        res.status(200).json({
             makes: data.menuItems.menuItem.map((element) => {
                 return element.value[0]
             })
@@ -58,15 +58,17 @@ function urlQuery(url, callback) {
     }).then((infoXml) => {
         parseString(infoXml, function (error, result) {
             if (error) {
-                console.log(error)
-                res.sendStatus(500)
+                res.status(500).json({
+                    error: error
+                })
             } else {
                 callback(result)
             }
         })
     }).catch((error) => {
-        console.log(error)
-        res.sendStatus(500)
+        res.status(500).json({
+            error: error
+        })
     })
 }
 

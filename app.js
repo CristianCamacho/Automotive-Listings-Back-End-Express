@@ -5,6 +5,7 @@ const PORT = 3000
 
 app.use(express.json())
 app.use('/api/v1/auto-info', routes.autoInfo)
+app.use('/api/v1/listings', routes.listings)
 
 app.get('/', (req, res) => {
     res.send('yee')

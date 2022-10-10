@@ -1,3 +1,4 @@
 module.exports = {
-    autoInfo: require('./autoInfo.routes')
+    autoInfo: require('./autoInfo.routes'),
+    listings: require('./listings.routes')
 }

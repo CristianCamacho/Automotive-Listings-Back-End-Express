@@ -2,13 +2,14 @@ const express = require('express')
 const session = require('express-session')
 const routes = require('./routes/index')
 const app = express()
+const db = require('./db');
 const PORT = 4000
 
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false
-  }));
+}));
 
 app.use(express.json())
 app.use('/api/v1/auto-info', routes.autoInfo)
